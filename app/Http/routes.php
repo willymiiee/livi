@@ -12,7 +12,7 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+	return redirect('home');
 });
 
 /*
@@ -27,5 +27,33 @@ Route::get('/', function () {
 */
 
 Route::group(['middleware' => ['web']], function () {
-    //
+	//
+});
+
+Route::group(['middleware' => 'web'], function () {
+	Route::get('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@showLoginForm']);
+	Route::post('login', ['as' => 'auth.login', 'uses' => 'Auth\AuthController@login']);
+	Route::get('logout', ['as' => 'auth.logout', 'uses' => 'Auth\AuthController@logout']);
+
+	// Registration Routes...
+	Route::get('register', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@showRegistrationForm']);
+	Route::post('register', ['as' => 'auth.register', 'uses' => 'Auth\AuthController@register']);
+
+	// Password Reset Routes...
+	Route::get('password/reset/{token?}', ['as' => 'auth.password.reset', 'uses' => 'Auth\PasswordController@showResetForm']);
+	Route::post('password/email', ['as' => 'auth.password.email', 'uses' => 'Auth\PasswordController@sendResetLinkEmail']);
+	Route::post('password/reset', ['as' => 'auth.password.reset', 'uses' => 'Auth\PasswordController@reset']);	
+
+	Route::get('/home', 'HomeController@index');
+
+	Route::group(['prefix' => '/settings', 'middleware' => ['auth']], function () {
+		Route::group(['prefix' => 'menu'], function () {
+	    	Route::get('/', 'SettingController@menu_list');
+	    	Route::get('/add', 'SettingController@menu_add');
+	    	Route::post('/add', 'SettingController@menu_insert');
+	    	Route::get('/edit/{id}', 'SettingController@menu_edit');
+	    	Route::post('/edit', 'SettingController@menu_update');
+	    	Route::get('/delete/{id}', 'SettingController@menu_delete');
+		});
+	});
 });
