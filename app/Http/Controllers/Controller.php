@@ -15,7 +15,7 @@ class Controller extends BaseController
 {
 	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-	public function menu_access()
+	protected function menu_access()
 	{
 		$role = Role::find(Auth::user()->role_id);
 		$menus = array();

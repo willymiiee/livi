@@ -1,7 +1,11 @@
 @extends('layouts.app')
 
 @section('header')
+	@if (!isset($item))
 	Add Menu
+	@else
+	Edit Menu
+	@endif
 @endsection
 
 @section('content')

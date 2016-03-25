@@ -1,43 +1,43 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Setting;
 
 use Auth;
 use Validator;
+use App\Http\Controllers\Controller;
 use App\Models\Menu;
 use App\Http\Requests;
 use Illuminate\Http\Request;
 
-class SettingController extends Controller
+class MenuController extends Controller
 {
 	public function __construct()
 	{
 		$this->middleware('auth');
 	}
 
-	public function head_menu()
+	public function get_menu($head_id = 0)
 	{
-		// ambil head menu
-		// $menus = Menu::get();
-		$menus = Menu::where('parent_id', 0)
+		// ambil menu
+		$menus = Menu::where('parent_id', $head_id)
 					->where('active', 'Y')
 					->get();
 		// sort by order
-		$menus = $menus->sortBy('order')->toArray();
+		$menus = $menus->sortBy('order');
 		return $menus;
 	}
 
 	public function menu_list()
 	{
 		$data['menu'] = $this->menu_access();
-		$data['head'] = $this->head_menu();
+		$data['head'] = $this->get_menu();
 		return view('contents.settings.menu.list', $data);
 	}
 
 	public function menu_add()
 	{
 		$data['menu'] = $this->menu_access();
-		$data['head'] = $this->head_menu();
+		$data['head'] = $this->get_menu();
 		return view('contents.settings.menu.form', $data);
 	}
 
@@ -59,7 +59,7 @@ class SettingController extends Controller
 	public function menu_edit($id)
 	{
 		$data['menu'] = $this->menu_access();
-		$data['head'] = $this->head_menu();
+		$data['head'] = $this->get_menu();
 		$data['item'] = Menu::find($id);
 		return view('contents.settings.menu.form', $data);
 	}
