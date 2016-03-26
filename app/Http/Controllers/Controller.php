@@ -23,7 +23,11 @@ class Controller extends BaseController
 		// list menu apa saja yg bisa diakses seorang user
 		foreach ($role->access as $ak):
 			$menu = Menu::find($ak->menu_id);
-			array_push($menus, $menu->toArray());
+			$menu = $menu->toArray();
+			$menu['add'] = $ak->add;
+			$menu['edit'] = $ak->edit;
+			$menu['delete'] = $ak->delete;
+			array_push($menus, $menu);
 		endforeach;
 		
 		// ambil head menu (yang parent id nya 0) dari list menu

@@ -16,20 +16,42 @@ class RoleController extends Controller
 		$this->middleware('auth');
 	}
 
-	public function role_list()
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
 	{
 		$data['menu'] = $this->menu_access();
 		$data['role'] = Role::where('active', 'Y')->get();
+		// $coba = array_where($data['menu'], function($k, $v) {
+		// 	if ($v['name'] == Request::segment(2)):
+		// 		return $v;
+		// 	endif;
+		// });
+		// print_r($coba); die();
 		return view('contents.settings.role.list', $data);
 	}
 
-	public function role_add()
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create()
 	{
 		$data['menu'] = $this->menu_access();
 		return view('contents.settings.role.form', $data);
 	}
 
-	public function role_insert(Request $request)
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request)
 	{
 		$input = $request->all();
 		Role::create([
@@ -39,14 +61,26 @@ class RoleController extends Controller
 		return redirect()->intended('/settings/role')->with('flash-message','Data has been successfully inserted !');
 	}
 
-	public function role_edit($id)
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit($id)
 	{
 		$data['menu'] = $this->menu_access();
 		$data['item'] = Role::find($id);
 		return view('contents.settings.role.form', $data);
 	}
 
-	public function role_update(Request $request)
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request)
 	{
 		$input = $request->all();
 		Role::where('id', $input['id'])
@@ -57,7 +91,13 @@ class RoleController extends Controller
 		return redirect()->intended('/settings/role')->with('flash-message','Data has been successfully updated !');
 	}
 
-	public function role_delete($id)
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy($id)
 	{
 		$item = Role::find($id);
 		$item->active = 'N';

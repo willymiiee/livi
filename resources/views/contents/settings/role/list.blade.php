@@ -31,6 +31,7 @@
 				<thead>
 					<tr>
 						<th class="center">Name</th>
+						<th class="center">Access</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -39,6 +40,7 @@
 					@foreach ($role as $m)
 					<tr>
 						<td class="center">{{ $m['name'] }}</td>
+						<td class="center"><a href="{{ url('/settings/access/'.$m['id']) }}" class="btn btn-xs btn-primary">Accesses</a></td>
 						<td>
 							<div class="hidden-sm hidden-xs btn-group">
 								<a href="{{ url()->current().'/edit/'.$m['id'] }}" class="btn btn-xs btn-info">

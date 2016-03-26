@@ -27,21 +27,37 @@ class MenuController extends Controller
 		return $menus;
 	}
 
-	public function menu_list()
+	/**
+	 * Display a listing of the resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function index()
 	{
 		$data['menu'] = $this->menu_access();
 		$data['head'] = $this->get_menu();
 		return view('contents.settings.menu.list', $data);
 	}
 
-	public function menu_add()
+	/**
+	 * Show the form for creating a new resource.
+	 *
+	 * @return \Illuminate\Http\Response
+	 */
+	public function create()
 	{
 		$data['menu'] = $this->menu_access();
 		$data['head'] = $this->get_menu();
 		return view('contents.settings.menu.form', $data);
 	}
 
-	public function menu_insert(Request $request)
+	/**
+	 * Store a newly created resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function store(Request $request)
 	{
 		$input = $request->all();
 		$head_menu = $request->input('head_menu', '0');
@@ -56,7 +72,13 @@ class MenuController extends Controller
 		return redirect()->intended('/settings/menu')->with('flash-message','Data has been successfully inserted !');
 	}
 
-	public function menu_edit($id)
+	/**
+	 * Show the form for editing the specified resource.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function edit($id)
 	{
 		$data['menu'] = $this->menu_access();
 		$data['head'] = $this->get_menu();
@@ -64,7 +86,13 @@ class MenuController extends Controller
 		return view('contents.settings.menu.form', $data);
 	}
 
-	public function menu_update(Request $request)
+	/**
+	 * Update the specified resource in storage.
+	 *
+	 * @param  \Illuminate\Http\Request  $request
+	 * @return \Illuminate\Http\Response
+	 */
+	public function update(Request $request)
 	{
 		$input = $request->all();
 		$head_menu = $request->input('head_menu', '0');
@@ -80,7 +108,13 @@ class MenuController extends Controller
 		return redirect()->intended('/settings/menu')->with('flash-message','Data has been successfully updated !');
 	}
 
-	public function menu_delete($id)
+	/**
+	 * Remove the specified resource from storage.
+	 *
+	 * @param  int  $id
+	 * @return \Illuminate\Http\Response
+	 */
+	public function destroy($id)
 	{
 		$item = Menu::find($id);
 		$item->active = 'N';
