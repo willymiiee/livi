@@ -26,6 +26,13 @@ Route::get('/', function () {
 |
 */
 
+Route::group(['prefix' => '/api'], function () {
+	Route::group(['prefix' => 'category'], function () {
+		Route::get('/list/{skip?}', 'Book\CategoryController@get');
+		Route::post('/find/{skip?}', 'Book\CategoryController@find');
+	});
+});
+
 Route::group(['middleware' => ['web']], function () {
 	//
 });
@@ -46,15 +53,15 @@ Route::group(['middleware' => 'web'], function () {
 
 	Route::get('/home', 'HomeController@index');
 
-	Route::group(['prefix' => '/settings', 'middleware' => ['auth']], function () {
-		Route::group(['prefix' => 'menu'], function () {
-			Route::get('/', 'Setting\MenuController@index');
-			Route::get('/add', 'Setting\MenuController@create');
-			Route::post('/add', 'Setting\MenuController@store');
-			Route::get('/edit/{id}', 'Setting\MenuController@edit');
-			Route::post('/edit', 'Setting\MenuController@update');
-			Route::get('/delete/{id}', 'Setting\MenuController@destroy');
-			Route::get('/get/{id}', ['as' => 'getmenu', 'uses' => 'Setting\MenuController@get_menu']);
+	Route::group(['prefix' => '/books', 'middleware' => ['auth']], function () {
+		Route::group(['prefix' => 'categories'], function () {
+			Route::get('/', 'Book\CategoryController@index');
+			Route::get('/add', 'Book\CategoryController@create');
+			Route::post('/add', 'Book\CategoryController@store');
+			Route::get('/edit/{id}', 'Book\CategoryController@edit');
+			Route::post('/edit', 'Book\CategoryController@update');
+			Route::get('/delete/{id}', 'Book\CategoryController@destroy');
+			Route::get('/get/{id}', ['as' => 'getmenu', 'uses' => 'Controller@get_menu']);
 		});
 
 		Route::group(['prefix' => 'role'], function () {
@@ -67,10 +74,34 @@ Route::group(['middleware' => 'web'], function () {
 		});
 
 		Route::group(['prefix' => 'access'], function () {
-			Route::get('/{id}', 'Setting\AccessController@role_list');
-			Route::get('/edit/{id}', 'Setting\AccessController@role_edit');
-			Route::post('/edit', 'Setting\AccessController@role_update');
-			Route::get('/delete/{id}', 'Setting\AccessController@role_delete');
+			Route::get('/{id}', 'Setting\AccessController@edit');
+			Route::post('/edit', 'Setting\AccessController@update');
+		});
+	});
+
+	Route::group(['prefix' => '/settings', 'middleware' => ['auth']], function () {
+		Route::group(['prefix' => 'menu'], function () {
+			Route::get('/', 'Setting\MenuController@index');
+			Route::get('/add', 'Setting\MenuController@create');
+			Route::post('/add', 'Setting\MenuController@store');
+			Route::get('/edit/{id}', 'Setting\MenuController@edit');
+			Route::post('/edit', 'Setting\MenuController@update');
+			Route::get('/delete/{id}', 'Setting\MenuController@destroy');
+			Route::get('/get/{id}', ['as' => 'getmenu', 'uses' => 'Controller@get_menu']);
+		});
+
+		Route::group(['prefix' => 'role'], function () {
+			Route::get('/', 'Setting\RoleController@index');
+			Route::get('/add', 'Setting\RoleController@create');
+			Route::post('/add', 'Setting\RoleController@store');
+			Route::get('/edit/{id}', 'Setting\RoleController@edit');
+			Route::post('/edit', 'Setting\RoleController@update');
+			Route::get('/delete/{id}', 'Setting\RoleController@destroy');
+		});
+
+		Route::group(['prefix' => 'access'], function () {
+			Route::get('/{id}', 'Setting\AccessController@edit');
+			Route::post('/edit', 'Setting\AccessController@update');
 		});
 	});
 });

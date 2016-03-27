@@ -129,8 +129,8 @@
 
 @section('script')
 	$('.submenu').click(function() {
+		$('#content').empty();
 		$.get('menu/get/' + $(this).attr('menu-id'), function(data) {
-			$('#content').empty();
 			$.each(data, function(key,value) {
 				$('#content').append('<tr><td class="center">'+value.name+'</td><td class="center">'+value.url+'</td><td class="center hidden-480">'+value.order+'</td><td><div class="btn-group"><a href="menu/edit/'+value.id+'" class="btn btn-xs btn-info"><i class="ace-icon fa fa-pencil bigger-120"></i></a><a href="menu/delete/'+value.id+'" onclick="return confirm(\'Are you sure?\');" class="btn btn-xs btn-danger"><i class="ace-icon fa fa-trash-o bigger-120"></i></a></div></td></tr>');
 			});

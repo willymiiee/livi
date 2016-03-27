@@ -16,17 +16,6 @@ class MenuController extends Controller
 		$this->middleware('auth');
 	}
 
-	public function get_menu($head_id = 0)
-	{
-		// ambil menu
-		$menus = Menu::where('parent_id', $head_id)
-					->where('active', 'Y')
-					->get();
-		// sort by order
-		$menus = $menus->sortBy('order');
-		return $menus;
-	}
-
 	/**
 	 * Display a listing of the resource.
 	 *
