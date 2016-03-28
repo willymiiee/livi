@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Auth;
 use App\Models\Menu;
 use App\Models\Role;
+use App\Models\Category;
 
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Routing\Controller as BaseController;
@@ -66,5 +67,15 @@ class Controller extends BaseController
 		// sort by order
 		$menus = $menus->sortBy('order');
 		return $menus;
+	}
+
+	public function all_category($start = 0)
+	{
+		$cat = Category::where('active', 'Y')
+					// ->orderBy('content_publishdate', 'desc')
+					->skip($start)
+					->take(10)
+					->get();
+		return response()->json($cat);
 	}
 }

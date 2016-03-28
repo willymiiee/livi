@@ -28,7 +28,7 @@ Route::get('/', function () {
 
 Route::group(['prefix' => '/api'], function () {
 	Route::group(['prefix' => 'category'], function () {
-		Route::get('/list/{skip?}', 'Book\CategoryController@get');
+		Route::get('/list/{skip?}', 'Controller@all_category');
 		Route::post('/find/{skip?}', 'Book\CategoryController@find');
 	});
 });

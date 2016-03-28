@@ -11,14 +11,13 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
-	public function get($start = 0)
+	public function get_category($parent_id = 0)
 	{
 		$cat = Category::where('active', 'Y')
 					// ->orderBy('content_publishdate', 'desc')
-					->skip($start)
-					->take(10)
+					->where('parent_id', $parent_id)
 					->get();
-		return response()->json($cat);
+		return $cat->toArray();
 	}
 
 	/**
@@ -28,7 +27,15 @@ class CategoryController extends Controller
 	 */
 	public function index()
 	{
-		return $this->get();
+		$data['menu'] = $this->menu_access();
+		$data['category'] = array();
+		$head_cat = $this->get_category();
+		foreach ($head_cat as $head):
+			$child = $this->get_category($head['id']);
+			$head['child'] = $child;
+			array_push($data['category'], $head);
+		endforeach;
+		return view('contents.books.categories.list', $data);
 	}
 
 	/**
@@ -39,7 +46,7 @@ class CategoryController extends Controller
 	public function create()
 	{
 		$data['menu'] = $this->menu_access();
-		$data['head'] = $this->get_menu();
+		$data['head'] = $this->get_category();
 		return view('contents.books.categories.form', $data);
 	}
 
@@ -62,17 +69,6 @@ class CategoryController extends Controller
 	}
 
 	/**
-	 * Display the specified resource.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show($id)
-	{
-		//
-	}
-
-	/**
 	 * Show the form for editing the specified resource.
 	 *
 	 * @param  int  $id
@@ -80,19 +76,29 @@ class CategoryController extends Controller
 	 */
 	public function edit($id)
 	{
-		//
+		$data['menu'] = $this->menu_access();
+		$data['head'] = $this->get_category();
+		$data['item'] = Category::find($id);
+		return view('contents.books.categories.form', $data);
 	}
 
 	/**
 	 * Update the specified resource in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, $id)
+	public function update(Request $request)
 	{
-		//
+		$input = $request->all();
+		$head_cat = $request->input('head_cat', '0');
+		Category::where('id', $input['id'])
+			->update([
+				'name' => $input['name'],
+				'parent_id' => $head_cat,
+				'updated_by' => Auth::user()->name,
+			]);
+		return redirect()->intended('/books/categories')->with('flash-message','Data has been successfully updated !');
 	}
 
 	/**
@@ -103,6 +109,10 @@ class CategoryController extends Controller
 	 */
 	public function destroy($id)
 	{
-		//
+		$item = Category::find($id);
+		$item->active = 'N';
+		$item->updated_by = Auth::user()->name;
+		$item->save();
+		return redirect()->intended('/books/categories')->with('flash-message','Data has been successfully updated !');
 	}
 }
