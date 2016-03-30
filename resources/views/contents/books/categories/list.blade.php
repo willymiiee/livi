@@ -32,7 +32,6 @@
 					<tr>
 						<th class="center">Name</th>
 						<th class="center">Code</th>
-						<th class="center">Sub-categories</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -40,13 +39,8 @@
 				<tbody>
 					@foreach ($category as $m)
 					<tr>
-						<td class="center">{{ $m['name'] }}</td>
+						<td><b>{{ $m['name'] }}</b></td>
 						<td class="center">{{ $m['code'] }}</td>
-						<td class="center">
-							@foreach ($m['child'] as $c)
-							<p>{{ $c['name'] }}</p>
-							@endforeach
-						</td>
 						<td>
 							<div class="hidden-sm hidden-xs btn-group">
 								<a href="{{ url()->current().'/edit/'.$m['id'] }}" class="btn btn-xs btn-info">
@@ -85,6 +79,51 @@
 							</div>
 						</td>
 					</tr>
+					
+					@foreach ($m['child'] as $c)
+					<tr>
+						<td>--> {{ $c['name'] }}</td>
+						<td class="center">{{ $c['code'] }}</td>
+						<td>
+							<div class="hidden-sm hidden-xs btn-group">
+								<a href="{{ url()->current().'/edit/'.$c['id'] }}" class="btn btn-xs btn-info">
+									<i class="ace-icon fa fa-pencil bigger-120"></i>
+								</a>
+
+								<a href="{{ url()->current().'/delete/'.$c['id'] }}" onclick="return confirm('Are you sure?');" class="btn btn-xs btn-danger">
+									<i class="ace-icon fa fa-trash-o bigger-120"></i>
+								</a>
+							</div>
+
+							<div class="hidden-md hidden-lg">
+								<div class="inline pos-rel">
+									<button class="btn btn-minier btn-primary dropdown-toggle" data-toggle="dropdown" data-position="auto">
+										<i class="ace-icon fa fa-cog icon-only bigger-110"></i>
+									</button>
+
+									<ul class="dropdown-menu dropdown-only-icon dropdown-yellow dropdown-menu-right dropdown-caret dropdown-close">
+										<li>
+											<a href="{{ url()->current().'/edit/'.$c['id'] }}" class="tooltip-success" data-rel="tooltip" title="Edit">
+												<span class="green">
+													<i class="ace-icon fa fa-pencil-square-o bigger-120"></i>
+												</span>
+											</a>
+										</li>
+
+										<li>
+											<a href="{{ url()->current().'/delete/'.$c['id'] }}" onclick="return confirm('Are you sure?');" class="tooltip-error" data-rel="tooltip" title="Delete">
+												<span class="red">
+													<i class="ace-icon fa fa-trash-o bigger-120"></i>
+												</span>
+											</a>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</td>
+					</tr>
+					@endforeach
+
 					@endforeach
 				</tbody>
 			</table>

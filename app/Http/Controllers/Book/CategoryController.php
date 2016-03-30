@@ -11,11 +11,39 @@ use Illuminate\Http\Request;
 
 class CategoryController extends Controller
 {
+	public function all($start = 0)
+	{
+		$cat = Category::where('active', 'Y')
+					// ->orderBy('content_publishdate', 'desc')
+					->skip($start)
+					->take(10)
+					->get();
+		return response()->json($cat);
+	}
+
+	public function find(Request $request, $start = 0)
+	{
+		if ($request->has('kategori')):
+			$kategori = $request->input('kategori');
+			$request->session()->put('kategori', $kategori);
+		else:
+			$kategori = $request->session()->get('kategori');
+		endif;
+		$cat = Category::where('active', 'Y')
+					->where('name', 'like', '%'.$kategori.'%')
+					// ->orderBy('content_publishdate', 'desc')
+					->skip($start)
+					->take(10)
+					->get();
+		return response()->json($cat);
+	}
+
 	public function get_category($parent_id = 0)
 	{
 		$cat = Category::where('active', 'Y')
 					// ->orderBy('content_publishdate', 'desc')
 					->where('parent_id', $parent_id)
+					// ->take(10)
 					->get();
 		return $cat->toArray();
 	}

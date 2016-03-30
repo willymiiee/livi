@@ -26,15 +26,17 @@ Route::get('/', function () {
 |
 */
 
-Route::group(['prefix' => '/api'], function () {
-	Route::group(['prefix' => 'category'], function () {
-		Route::get('/list/{skip?}', 'Controller@all_category');
-		Route::post('/find/{skip?}', 'Book\CategoryController@find');
+
+Route::group(['middleware' => ['api']], function () {
+	Route::group(['prefix' => '/api'], function () {
+		Route::group(['prefix' => 'category'], function () {
+			Route::get('/list/{skip?}', 'Book\CategoryController@all');
+			Route::post('/find/{skip?}', 'Book\CategoryController@find');
+		});
 	});
 });
 
 Route::group(['middleware' => ['web']], function () {
-	//
 });
 
 Route::group(['middleware' => 'web'], function () {

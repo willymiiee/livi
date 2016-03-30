@@ -68,14 +68,4 @@ class Controller extends BaseController
 		$menus = $menus->sortBy('order');
 		return $menus;
 	}
-
-	public function all_category($start = 0)
-	{
-		$cat = Category::where('active', 'Y')
-					// ->orderBy('content_publishdate', 'desc')
-					->skip($start)
-					->take(10)
-					->get();
-		return response()->json($cat);
-	}
 }
