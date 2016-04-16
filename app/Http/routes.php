@@ -63,7 +63,7 @@ Route::group(['middleware' => 'web'], function () {
 			Route::get('/edit/{id}', 'Book\CategoryController@edit');
 			Route::post('/edit', 'Book\CategoryController@update');
 			Route::get('/delete/{id}', 'Book\CategoryController@destroy');
-			Route::get('/get/{id}', ['as' => 'getmenu', 'uses' => 'Controller@get_menu']);
+			Route::get('/get/{id}', ['as' => 'getcategory', 'uses' => 'Book\CategoryController@get_category']);
 		});
 
 		Route::group(['prefix' => 'role'], function () {

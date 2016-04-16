@@ -56,7 +56,6 @@ class MenuController extends Controller
 			'url' => $input['url'],
 			'icon' => $input['icon'],
 			'order' => $input['order'],
-			'created_by' => Auth::user()->name,
 		]);
 		return redirect()->intended('/settings/menu')->with('flash-message','Data has been successfully inserted !');
 	}
@@ -92,7 +91,6 @@ class MenuController extends Controller
 				'url' => $input['url'],
 				'icon' => $input['icon'],
 				'order' => $input['order'],
-				'updated_by' => Auth::user()->name,
 			]);
 		return redirect()->intended('/settings/menu')->with('flash-message','Data has been successfully updated !');
 	}
@@ -107,7 +105,6 @@ class MenuController extends Controller
 	{
 		$item = Menu::find($id);
 		$item->active = 'N';
-		$item->updated_by = Auth::user()->name;
 		$item->save();
 		return redirect()->intended('/settings/menu')->with('flash-message','Data has been successfully updated !');
 	}

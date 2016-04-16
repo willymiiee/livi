@@ -12,6 +12,8 @@
 				Add Data
 			</a>
 
+			<div class="space-6"></div>
+
 			@if (Session::has('flash-message'))
 			<div class="alert alert-block alert-success">
 				<button data-dismiss="alert" class="close" type="button">

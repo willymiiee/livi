@@ -93,6 +93,7 @@
 												</fieldset>
 											</form>
 										</div><!-- /.widget-main -->
+		}
 
 <!--
 										<div class="toolbar clearfix">

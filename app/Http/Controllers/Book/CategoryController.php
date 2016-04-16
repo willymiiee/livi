@@ -38,12 +38,13 @@ class CategoryController extends Controller
 		return response()->json($cat);
 	}
 
-	public function get_category($parent_id = 0)
+	public function get_category($parent_id = 0, $skip = 0)
 	{
 		$cat = Category::where('active', 'Y')
 					// ->orderBy('content_publishdate', 'desc')
 					->where('parent_id', $parent_id)
-					// ->take(10)
+					->skip(($skip - 1) * 10)
+					->take(1000)
 					->get();
 		return $cat->toArray();
 	}
@@ -53,16 +54,19 @@ class CategoryController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
+		$page = $request->input('page');
 		$data['menu'] = $this->menu_access();
-		$data['category'] = array();
-		$head_cat = $this->get_category();
-		foreach ($head_cat as $head):
+		$data['category'] = $this->get_category(0, $page);
+		$i = 0;
+		foreach ($data['category'] as $head):
 			$child = $this->get_category($head['id']);
-			$head['child'] = $child;
-			array_push($data['category'], $head);
+			$data['category'][$i]['child'] = $child;
+			$i++;
 		endforeach;
+		$data['category'] = new \Illuminate\Pagination\Paginator($data['category'], 10, $page);
+		$data['category']->setPath('categories');
 		return view('contents.books.categories.list', $data);
 	}
 
@@ -90,7 +94,9 @@ class CategoryController extends Controller
 		$head_cat = $request->input('head_cat', '0');
 		Category::create([
 			'name' => $input['name'],
+			'code' => $input['code'],
 			'parent_id' => $head_cat,
+			'type' => $input['type'],
 			'created_by' => Auth::user()->name,
 		]);
 		return redirect()->intended('/books/categories')->with('flash-message','Data has been successfully inserted !');
@@ -123,7 +129,9 @@ class CategoryController extends Controller
 		Category::where('id', $input['id'])
 			->update([
 				'name' => $input['name'],
+				'code' => $input['code'],
 				'parent_id' => $head_cat,
+				'type' => $input['type'],
 				'updated_by' => Auth::user()->name,
 			]);
 		return redirect()->intended('/books/categories')->with('flash-message','Data has been successfully updated !');

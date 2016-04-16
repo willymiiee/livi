@@ -56,7 +56,6 @@ class RoleController extends Controller
 		$input = $request->all();
 		Role::create([
 			'name' => $input['name'],
-			'created_by' => Auth::user()->name,
 		]);
 		return redirect()->intended('/settings/role')->with('flash-message','Data has been successfully inserted !');
 	}
@@ -86,7 +85,6 @@ class RoleController extends Controller
 		Role::where('id', $input['id'])
 			->update([
 				'name' => $input['name'],
-				'updated_by' => Auth::user()->name,
 			]);
 		return redirect()->intended('/settings/role')->with('flash-message','Data has been successfully updated !');
 	}
@@ -101,7 +99,6 @@ class RoleController extends Controller
 	{
 		$item = Role::find($id);
 		$item->active = 'N';
-		$item->updated_by = Auth::user()->name;
 		$item->save();
 		return redirect()->intended('/settings/role')->with('flash-message','Data has been successfully updated !');
 	}

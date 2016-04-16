@@ -24,11 +24,13 @@ class Controller extends BaseController
 		// list menu apa saja yg bisa diakses seorang user
 		foreach ($role->access as $ak):
 			$menu = Menu::find($ak->menu_id);
-			$menu = $menu->toArray();
-			$menu['add'] = $ak->add;
-			$menu['edit'] = $ak->edit;
-			$menu['delete'] = $ak->delete;
-			array_push($menus, $menu);
+			if ($menu->active == 'Y'):
+				$menu = $menu->toArray();
+				$menu['add'] = $ak->add;
+				$menu['edit'] = $ak->edit;
+				$menu['delete'] = $ak->delete;
+				array_push($menus, $menu);
+			endif;
 		endforeach;
 		
 		// ambil head menu (yang parent id nya 0) dari list menu
@@ -39,9 +41,9 @@ class Controller extends BaseController
 		});
 
 		// sort head menu by order
-		$data = array_sort($data, function ($key, $value) {
-			return $value['order'];
-		});
+		// $data = array_sort($data, function ($key, $value) {
+			// return $value['order'];
+		// });
 		
 		// tiap head menu
 		foreach ($data as $k => $v):
