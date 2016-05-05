@@ -16,7 +16,7 @@ class Controller extends BaseController
 {
 	use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-	protected function menu_access()
+	protected function menuAccess()
 	{
 		$role = Role::find(Auth::user()->role_id);
 		$menus = array();
@@ -60,7 +60,7 @@ class Controller extends BaseController
 		return $data;
 	}
 
-	public function get_menu($head_id = 0)
+	public function getMenu($head_id = 0)
 	{
 		// ambil menu
 		$menus = Menu::where('parent_id', $head_id)

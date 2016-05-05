@@ -24,9 +24,9 @@ class AccessController extends Controller
 	 */
 	public function edit($id)
 	{
-		$data['menu'] = $this->menu_access();
+		$data['menu'] = $this->menuAccess();
 		$data['item'] = array();
-		$head = $this->get_menu()->toArray();
+		$head = $this->getMenu()->toArray();
 		$i = 0;
 		foreach ($head as $h):
 			$access = Access::select('add', 'edit', 'delete')
@@ -36,7 +36,7 @@ class AccessController extends Controller
 			$h['access'] = $access;
 
 			$child_menus = array();
-			$child = $this->get_menu($h['id'])->toArray();
+			$child = $this->getMenu($h['id'])->toArray();
 			foreach ($child as $c):
 				$access = Access::select('add', 'edit', 'delete')
 							->where('role_id', $id)
@@ -59,8 +59,23 @@ class AccessController extends Controller
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
-	public function update(Request $request, $id)
+	public function update(Request $request)
 	{
-		//
+		$input = $request->all();
+		Access::where('role_id', $input['roleId'])
+			->delete();
+		foreach ($input['menu'] as $menuId => $val):
+			(array_key_exists($menuId, $input['add']) ? $add = 'Y' : $add = 'N');
+			(array_key_exists($menuId, $input['edit']) ? $edit = 'Y' : $edit = 'N');
+			(array_key_exists($menuId, $input['delete']) ? $delete = 'Y' : $delete = 'N');
+			Access::create([
+				'role_id' => $input['roleId'],
+				'menu_id' => $menuId,
+				'add' => $add,
+				'edit' => $edit,
+				'delete' => $delete
+			]);
+		endforeach;
+		return redirect()->intended('/settings/role')->with('flash-message','Data has been successfully updated !');
 	}
 }

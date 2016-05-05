@@ -24,7 +24,7 @@ class HomeController extends Controller
 	 */
 	public function index()
 	{
-		$data['menu'] = $this->menu_access();
+		$data['menu'] = $this->menuAccess();
 		return view('contents.home', $data);
  	}
 }

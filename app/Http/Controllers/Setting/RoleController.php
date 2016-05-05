@@ -23,7 +23,7 @@ class RoleController extends Controller
 	 */
 	public function index()
 	{
-		$data['menu'] = $this->menu_access();
+		$data['menu'] = $this->menuAccess();
 		$data['role'] = Role::where('active', 'Y')->get();
 		// $coba = array_where($data['menu'], function($k, $v) {
 		// 	if ($v['name'] == Request::segment(2)):
@@ -41,7 +41,7 @@ class RoleController extends Controller
 	 */
 	public function create()
 	{
-		$data['menu'] = $this->menu_access();
+		$data['menu'] = $this->menuAccess();
 		return view('contents.settings.role.form', $data);
 	}
 
@@ -68,7 +68,7 @@ class RoleController extends Controller
 	 */
 	public function edit($id)
 	{
-		$data['menu'] = $this->menu_access();
+		$data['menu'] = $this->menuAccess();
 		$data['item'] = Role::find($id);
 		return view('contents.settings.role.form', $data);
 	}

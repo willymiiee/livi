@@ -33,8 +33,8 @@
 				<thead>
 					<tr>
 						<th class="center">Name</th>
-						<th class="center">Code</th>
 						<th class="center">Sub-category</th>
+						<th class="center">Code</th>
 						<th class="center">Type</th>
 						<th></th>
 					</tr>
@@ -44,12 +44,12 @@
 					@foreach ($category as $m)
 					<tr>
 						<td><b>{{ $m['name'] }}</b></td>
-						<td class="center">{{ $m['code'] }}</td>
 						<td class="center">
 							@if (!empty($m['child']))
 							<a href="#modal-form" class="subcategory btn btn-xs btn-success" category-id="{{ $m['id'] }}" data-toggle="modal">Sub-category</a>
 							@endif
 						</td>
+						<td class="center">{{ $m['code'] }}</td>
 						<td class="center">{{ $m['type'] == 'local' ? 'Lokal' : 'Internasional' }}</td>
 						<td>
 							<div class="hidden-sm hidden-xs btn-group">

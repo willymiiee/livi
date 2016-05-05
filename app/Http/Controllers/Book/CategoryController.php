@@ -16,7 +16,7 @@ class CategoryController extends Controller
 		$cat = Category::where('active', 'Y')
 					// ->orderBy('content_publishdate', 'desc')
 					->skip($start)
-					->take(10)
+					->take(15)
 					->get();
 		return response()->json($cat);
 	}
@@ -33,17 +33,17 @@ class CategoryController extends Controller
 					->where('name', 'like', '%'.$kategori.'%')
 					// ->orderBy('content_publishdate', 'desc')
 					->skip($start)
-					->take(10)
+					->take(15)
 					->get();
 		return response()->json($cat);
 	}
 
-	public function get_category($parent_id = 0, $skip = 0)
+	public function getCategory($parent_id = 0, $skip = 0)
 	{
 		$cat = Category::where('active', 'Y')
 					// ->orderBy('content_publishdate', 'desc')
 					->where('parent_id', $parent_id)
-					->skip(($skip - 1) * 10)
+					->skip(($skip - 1) * 15)
 					->take(1000)
 					->get();
 		return $cat->toArray();
@@ -57,15 +57,15 @@ class CategoryController extends Controller
 	public function index(Request $request)
 	{
 		$page = $request->input('page');
-		$data['menu'] = $this->menu_access();
-		$data['category'] = $this->get_category(0, $page);
+		$data['menu'] = $this->menuAccess();
+		$data['category'] = $this->getCategory(0, $page);
 		$i = 0;
 		foreach ($data['category'] as $head):
-			$child = $this->get_category($head['id']);
+			$child = $this->getCategory($head['id']);
 			$data['category'][$i]['child'] = $child;
 			$i++;
 		endforeach;
-		$data['category'] = new \Illuminate\Pagination\Paginator($data['category'], 10, $page);
+		$data['category'] = new \Illuminate\Pagination\Paginator($data['category'], 15, $page);
 		$data['category']->setPath('categories');
 		return view('contents.books.categories.list', $data);
 	}
@@ -77,8 +77,8 @@ class CategoryController extends Controller
 	 */
 	public function create()
 	{
-		$data['menu'] = $this->menu_access();
-		$data['head'] = $this->get_category();
+		$data['menu'] = $this->menuAccess();
+		$data['head'] = $this->getCategory();
 		return view('contents.books.categories.form', $data);
 	}
 
@@ -110,8 +110,8 @@ class CategoryController extends Controller
 	 */
 	public function edit($id)
 	{
-		$data['menu'] = $this->menu_access();
-		$data['head'] = $this->get_category();
+		$data['menu'] = $this->menuAccess();
+		$data['head'] = $this->getCategory();
 		$data['item'] = Category::find($id);
 		return view('contents.books.categories.form', $data);
 	}

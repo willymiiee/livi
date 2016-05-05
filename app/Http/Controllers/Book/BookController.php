@@ -28,7 +28,8 @@ class BookController extends Controller
 	 */
 	public function create()
 	{
-		//
+		$data['menu'] = $this->menuAccess();
+		return view('contents.books.books.form', $data);
 	}
 
 	/**
@@ -39,7 +40,30 @@ class BookController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		//
+		$input = $request->all();
+		Book::create([
+			'identifier' => $input['identifier'],
+			'category' => $input['code'],
+			'creator' => $input['creator'],
+			'description' => $input['description'],
+			'year' => $input['year'],
+			'publisher_Id' => $input['publisher_Id'],
+			'currency' => $input['currency'],
+			'price' => $input['price'],
+			'reseller_share' => $input['reseller_share'],
+			'format' => $input['format'],
+			'encryption' => $input['encryption'],
+			'whitelabel' => $input['whitelabel'],
+			'position' => $input['position'],
+			'type' => $input['type'],
+			'cover' => $input['cover'],
+			'epub' => $input['epub'],
+			'epub_sample' => $input['epub_sample'],
+			'featured' => $input['featured'],
+			'best_seller' => $input['best_seller'],
+			'new' => $input['new']
+		]);
+		return redirect()->intended('/books/list')->with('flash-message','Data has been successfully inserted !');
 	}
 
 	/**

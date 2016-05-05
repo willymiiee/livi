@@ -23,8 +23,8 @@ class MenuController extends Controller
 	 */
 	public function index()
 	{
-		$data['menu'] = $this->menu_access();
-		$data['head'] = $this->get_menu();
+		$data['menu'] = $this->menuAccess();
+		$data['head'] = $this->getMenu();
 		return view('contents.settings.menu.list', $data);
 	}
 
@@ -35,8 +35,8 @@ class MenuController extends Controller
 	 */
 	public function create()
 	{
-		$data['menu'] = $this->menu_access();
-		$data['head'] = $this->get_menu();
+		$data['menu'] = $this->menuAccess();
+		$data['head'] = $this->getMenu();
 		return view('contents.settings.menu.form', $data);
 	}
 
@@ -68,8 +68,8 @@ class MenuController extends Controller
 	 */
 	public function edit($id)
 	{
-		$data['menu'] = $this->menu_access();
-		$data['head'] = $this->get_menu();
+		$data['menu'] = $this->menuAccess();
+		$data['head'] = $this->getMenu();
 		$data['item'] = Menu::find($id);
 		return view('contents.settings.menu.form', $data);
 	}
