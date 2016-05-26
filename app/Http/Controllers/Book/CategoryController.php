@@ -15,10 +15,17 @@ class CategoryController extends Controller
 	{
 		$cat = Category::where('active', 'Y')
 					// ->orderBy('content_publishdate', 'desc')
-					->skip($start)
-					->take(15)
+					// ->skip($start)
+					// ->take(15)
 					->get();
-		return response()->json($cat);
+		return $cat->toArray();
+	}
+
+	public function getSingle($id)
+	{
+		$cat = Category::where('id', $id)
+					->first();
+		return $cat->toArray();
 	}
 
 	public function find(Request $request, $start = 0)
@@ -47,6 +54,14 @@ class CategoryController extends Controller
 					->take(1000)
 					->get();
 		return $cat->toArray();
+	}
+
+	public function getByCode($code)
+	{
+		$cat = Category::where('active', 'Y')
+					->where('code', $code)
+					->first();
+		return $cat;
 	}
 
 	/**

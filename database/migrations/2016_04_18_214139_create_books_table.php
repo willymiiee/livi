@@ -15,6 +15,7 @@ class CreateBooksTable extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->increments('id');
             $table->string('identifier', 50);
+            $table->string('title');
             $table->string('category');
             $table->string('creator');
             $table->text('description')->nullable();
@@ -22,8 +23,8 @@ class CreateBooksTable extends Migration
             $table->char('year', 4);
             $table->string('publisher_id');
             $table->string('currency');
-            $table->float('price');
-            $table->float('reseller_share');
+            $table->float('price')->default(0);
+            $table->float('reseller_share')->default(0);
             $table->string('format')->nullable();
             $table->string('encryption')->nullable();
             $table->string('whitelabel')->nullable();

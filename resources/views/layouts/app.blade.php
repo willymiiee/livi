@@ -39,6 +39,9 @@
 	<script src="{{ asset('js/html5shiv.min.js') }}"></script>
 	<script src="{{ asset('js/respond.min.js') }}"></script>
 	<![endif]-->
+
+	@yield('style')
+
 </head>
 <body class="no-skin">
 
@@ -235,6 +238,8 @@
 	<!-- ace scripts -->
 	<script src="{{ asset('js/ace-elements.min.js') }}"></script>
 	<script src="{{ asset('js/ace.min.js') }}"></script>
+
+	<script src="{{ asset('js/select2.min.js') }}"></script>
 
 	<!-- inline scripts related to this page -->
 	<script type="text/javascript">

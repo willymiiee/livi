@@ -4,14 +4,13 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Menu extends Model
+class OrderItems extends Model
 {
 	protected $fillable = [
-		'name',
-		'parent_id',
-		'url',
-		'icon',
-		'order',
-		'active'
+		'order_id',
+		'product_id',
+		'price',
 	];
+	
+	public $timestamps  = false;
 }

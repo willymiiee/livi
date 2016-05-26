@@ -33,6 +33,11 @@ Route::group(['middleware' => ['api']], function () {
 			Route::get('/list/{skip?}', 'Book\CategoryController@all');
 			Route::post('/find/{skip?}', 'Book\CategoryController@find');
 		});
+		Route::group(['prefix' => 'books'], function () {
+			Route::get('/list/{skip?}', 'Book\BookController@getBook');
+			Route::post('/find/{skip?}', 'Book\BookController@find');
+		});
+		Route::post('order', 'Order\OrderController@store');
 	});
 });
 
@@ -61,7 +66,7 @@ Route::group(['middleware' => 'web'], function () {
 			Route::get('/add', 'Book\BookController@create');
 			Route::post('/add', 'Book\BookController@store');
 			Route::get('/edit/{id}', 'Book\BookController@edit');
-			Route::post('/edit', 'Book\BookController@update');
+			Route::put('/edit', 'Book\BookController@update');
 			Route::get('/delete/{id}', 'Book\BookController@destroy');
 			// Route::get('/get/{id}', ['as' => 'getcategory', 'uses' => 'Book\CategoryController@getCategory']);
 		});
