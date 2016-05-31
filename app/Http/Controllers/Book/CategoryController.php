@@ -48,7 +48,6 @@ class CategoryController extends Controller
 	public function getCategory($parent_id = 0, $skip = 0)
 	{
 		$cat = Category::where('active', 'Y')
-					// ->orderBy('content_publishdate', 'desc')
 					->where('parent_id', $parent_id)
 					->skip(($skip - 1) * 15)
 					->take(1000)

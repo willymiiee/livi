@@ -34,8 +34,8 @@ Route::group(['middleware' => ['api']], function () {
 			Route::post('/find/{skip?}', 'Book\CategoryController@find');
 		});
 		Route::group(['prefix' => 'books'], function () {
-			Route::get('/list/{skip?}', 'Book\BookController@getBook');
-			Route::post('/find/{skip?}', 'Book\BookController@find');
+			Route::get('/', 'Book\BookController@getBook');
+			Route::post('/detail', 'Book\BookController@find');
 		});
 		Route::post('order', 'Order\OrderController@store');
 	});

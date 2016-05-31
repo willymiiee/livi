@@ -19,16 +19,26 @@ class BookController extends Controller
 		$this->category = $category;
 	}
 
-	public function getBook($skip = 1)
+	public function count($type = null)
+	{
+		$b = Book::count();
+		if ($type == 'page') {
+			$b = ceil($b / 30);
+		}
+		return $b;
+	}
+
+	public function getBook()
 	{
 		$request = app(Request::class);
-		$b = Book::skip(($skip - 1) * 15)
+		$page = ($request->input('page') ? $request->input('page') : 1);
+		$b = Book::skip(($page - 1) * 30)
 					->where('active', 'Y')
-					->when($request->input('type') == 'title', function ($query) use ($request) {
-						return $query->where('title', 'like', '%'.$request->input('param').'%');
+					->when($request->has('title'), function ($query) use ($request) {
+						return $query->where('title', 'like', '%'.$request->input('title').'%');
 					})
-					->when($request->input('type') == 'author', function ($query) use ($request) {
-						return $query->where('creator', 'like', '%'.$request->input('param').'%');
+					->when($request->has('author'), function ($query) use ($request) {
+						return $query->where('creator', 'like', '%'.$request->input('author').'%');
 					})
 					->when($request->input('free'), function ($query) {
 						return $query->where('price', 0);
@@ -43,13 +53,20 @@ class BookController extends Controller
 						return $query->where('language', 'like', '%'.$request->input('language').'%');
 					})
 					->orderBy('created_at', 'desc')
-					->take(15)
+					->take(30)
 						// return $query->paginate();
 					->get();
 
 		$b = $this->assignCategory($b);
 
-		return $b;
+		$data = [];
+		$data['page']			= (int) $page;
+		$data['per_page']		= 30;
+		$data['total_entries']	= $this->count();
+		$data['total_pages']	= $this->count('page');
+		$data['collection']		= $b;
+
+		return $data;
 	}
 
 	public function paginateBook($skip = 1)
@@ -90,9 +107,10 @@ class BookController extends Controller
 		return $books;
 	}
 
-	public function find($id)
+	public function find()
 	{
-		$item = Book::where('id', $id)
+		$request = app(Request::class);
+		$item = Book::where('id', $request->input('book_id'))
 					->first();
 		if ($item):
 			return $item->toArray();

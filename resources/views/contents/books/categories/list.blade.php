@@ -43,7 +43,7 @@
 				<tbody>
 					@foreach ($category as $m)
 					<tr>
-						<td><b>{{ $m['name'] }}</b></td>
+						<td class="center"><b>{{ $m['name'] }}</b></td>
 						<td class="center">
 							@if (!empty($m['child']))
 							<a href="#modal-form" class="subcategory btn btn-xs btn-success" category-id="{{ $m['id'] }}" data-toggle="modal">Sub-category</a>
